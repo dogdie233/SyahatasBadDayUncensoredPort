@@ -1,0 +1,3 @@
+[submodule "Studio"]
+	path = Studio
+	url = https://github.com/RazTools/Studio.git
