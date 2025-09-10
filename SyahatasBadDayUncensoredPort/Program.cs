@@ -61,8 +61,21 @@ foreach (var group in newGroups)
     {
         if (!oldClipsDic.TryGetValue(clip.m_Name, out var oldClip))
         {
-            Warn($"Could not find the corresponding uncensored clip for the censored clip: {clip.m_Name}");
-            continue;
+            // Special case: ZombieDog clips are named "Dog" in the uncensored version
+            if (clip.m_Name.StartsWith("ZombieDog_"))
+            {
+                var dogClipName = clip.m_Name.Replace("ZombieDog_", "Dog_");
+                if (oldClipsDic.TryGetValue(dogClipName, out oldClip))
+                {
+                    Info($"Found {clip.m_Name} mapped to {dogClipName}");
+                }
+            }
+            
+            if (oldClip == null)
+            {
+                Warn($"Could not find the corresponding uncensored clip for the censored clip: {clip.m_Name}");
+                continue;
+            }
         }
 
         Info($"Replacing {clip.m_Name} in {group.Key}...");
